@@ -7,6 +7,9 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import api from "../../api";
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
+
 
 const style = {
   position: "absolute",
@@ -43,10 +46,12 @@ export default function BasicModal({
   setTagArray
 }) {
   const handleClose = () => setOpen(false);
-  const [array, setArray] = useState('');
+  const [arrays, setArrays] = useState([]);
+  const [val, setVal] = useState();
+
 
   async function makepost() {
-    const data = { status_text: text, priority: priority, tags: tags };
+    const data = { status_text: text, priority: priority, tags: arrays.join() };
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Token ${Token}`,
@@ -62,7 +67,7 @@ export default function BasicModal({
   }
 
   async function updatepost() {
-    const data = { status_text: text, priority: priority, tags: tags };
+    const data = { status_text: text, priority: priority, tags: arrays.join() };
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Token ${Token}`,
@@ -77,14 +82,17 @@ export default function BasicModal({
     setText("");
     return request.data;
   }
-  const makeTags = () =>{
+  
 
-    setArray(tags)
-    console.log(array)
-    setTags(array+tags)
-
-    console.log(tags)
+  const postForm =(e)=>{
+    e.preventDefault()
+    update?updatepost():makepost()
   }
+  const deleteItem = () =>{
+    setArrays([])
+    setTags('')
+  }
+
 
   return (
     <div>
@@ -94,15 +102,14 @@ export default function BasicModal({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} component="form" onSubmit={makepost} noValidate>
+        <Box sx={style} component="form" onSubmit={postForm} noValidate>
           <Typography variant="h6" component="h6">
             Text Title
           </Typography>
           <TextField
             id="filled-full-width"
-            label="Todo"
             required
-            placeholder="Placeholder"
+            placeholder="Text Title*"
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
@@ -131,22 +138,21 @@ export default function BasicModal({
             </div>
           </Box>
 
-          <Typography variant="h6" component="h6" sx={{ mt: 2 }}>
+          <Typography variant="h6" component="h6" sx={{ mt: 1 }}>
             Lables
           </Typography>
           <Grid
             container
             direction="row"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
             spacing={2}
           >
             <Grid item xs={9}>
               <TextField
                 fullWidth
-                required
                 id="outlined-basic"
-                label="Lables"
+                placeholder="Lable"
                 size="small"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
@@ -156,21 +162,33 @@ export default function BasicModal({
                 }}
               />
             </Grid>
+
             <Grid item xs={3}>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={makeTags}
+                onClick={()=>setArrays((arrays)=>[...arrays,tags])}
                 sx={{ mt: 1 }}
               >
                 Add
               </Button>
+              {console.log(arrays)}
             </Grid>
-
-            <Grid item xs={12} sx={{ mt: 3 }}>
+            
+            {arrays?arrays.map((arr)=>(
+              <Grid item sx={{ mt: 1 }}>
+                {arr===""?null:<Chip label={arr} />}  
+              </Grid>
+            )):null }
+          {arrays.length>0?<Grid item sx={{ mt: 1 }}>
+          <IconButton onClick={deleteItem}>
+          <ClearIcon />
+          </IconButton>
+          </Grid>:null}
+            <Grid item xs={12} sx={{ mt: 1 }}>
               {update?<Button type= "submit" fullWidth variant="contained" >
                 UPDATE TASK{" "}</Button>:
-                <Button fullWidth variant="contained">
+                <Button type= "submit" fullWidth variant="contained">
                 ADD NEW TASK{" "}</Button>}
               
             </Grid>

@@ -3,6 +3,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
+import Button from "@mui/material/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import api from "../../api/index";
@@ -35,8 +36,9 @@ const deleteItem = () => {
       <CardHeader
         action={
           <>
-          <Chip label={tags} onDelete={deleteItem} />
-          <Chip label={priority} sx={{ ml: 3 }}/>
+          {tags.split(',').map(tag=>(<Chip label={tag} sx={{ml:1}}/>))}
+          
+          <Button sx={{ ml: 3 }}><strong>{priority} </strong></Button>
           <IconButton aria-label="settings" onClick={editItem}>
           <ModeEditOutlineOutlinedIcon />
           </IconButton>
@@ -47,7 +49,6 @@ const deleteItem = () => {
         }
         subheader={text}
       />
-      <Divider variant="middle" />
 
     </Card>
   );
