@@ -2,7 +2,6 @@ import React from "react";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
-import Divider from '@mui/material/Divider';
 import Button from "@mui/material/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
@@ -28,15 +27,13 @@ export default function SimpleCard({text,date,Fid,Token,setFeedItems,setText,set
     setValue(text); 
 };
 
-const deleteItem = () => { 
 
-}
   return (
     <Card sx={{ maxWidth: 900 }}>
       <CardHeader
         action={
           <>
-          {tags.split(',').map(tag=>(<Chip label={tag} sx={{ml:1}}/>))}
+          {tags.split(',').map(tag=>(tag?<Chip label={tag} sx={{ml:1}}/>:null))}
           
           <Button sx={{ ml: 3 }}><strong>{priority} </strong></Button>
           <IconButton aria-label="settings" onClick={editItem}>

@@ -22,11 +22,6 @@ const style = {
   borderRadius: 3,
   p: 4,
 };
-const tb = {
-  height: "80%"
-};
-
-
 export default function BasicModal({
   open,
   setOpen,
@@ -42,12 +37,9 @@ export default function BasicModal({
   priority,
   setTags,
   tags,
-  tagArray,
-  setTagArray
 }) {
   const handleClose = () => setOpen(false);
   const [arrays, setArrays] = useState([]);
-  const [val, setVal] = useState();
 
 
   async function makepost() {
@@ -62,7 +54,8 @@ export default function BasicModal({
     setFeedItems(req.data);
     setValue("");
     setText("");
-
+    setOpen(false)
+    setArrays([])
     return request.data;
   }
 
@@ -80,6 +73,8 @@ export default function BasicModal({
     setUpdate("");
     setValue("");
     setText("");
+    setOpen(false)
+    setArrays([])
     return request.data;
   }
   
@@ -126,15 +121,16 @@ export default function BasicModal({
           </Typography>
           <Box sx={{ "& button": { m: 1 } }}>
             <div>
-              <Button size="small" onClick={()=>setPriority("High")}>
+              <Button variant="contained" size="small" onClick={()=>setPriority("High")}>
                 High
               </Button>
-              <Button size="small" onClick={()=>setPriority("Medium")}>
+              <Button variant="contained" size="small" onClick={()=>setPriority("Medium")}>
                 Medium
               </Button>
-              <Button size="small" onClick={()=>setPriority("Low")}>
+              <Button variant="contained" size="small" onClick={()=>setPriority("Low")}>
                 Low
               </Button>
+              
             </div>
           </Box>
 
